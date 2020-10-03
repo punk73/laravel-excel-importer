@@ -15,5 +15,12 @@
         "psr-4": {
             "punk73\\laravel-excel-importer\\" : "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "punk73\\LaravelExcelImporter\\LaravelExcelImporterServiceProvider"
+            ]
+        }
     }
 }

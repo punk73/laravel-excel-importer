@@ -3,6 +3,8 @@
 namespace punk73\LaravelExcelImporter;
 
 use Illuminate\Console\Command as BasedCommand;
+use Illuminate\Support\Facades\Artisan;
+// use Maatwebsite\Excel\Facade\Excel
 
 class Command extends BasedCommand {
     /**
@@ -10,7 +12,7 @@ class Command extends BasedCommand {
      *
      * @var string
      */
-    protected $signature = 'make:importer';
+    protected $signature = 'make:importer {model}';
 
     /**
      * The console command description.
@@ -30,6 +32,15 @@ class Command extends BasedCommand {
         parent::__construct();
     }
 
+    public function getModel(){
+        $model = $this->argument('model');
+
+
+        $m = explode('\\', $model);
+
+        return $m[count($m) - 1];
+    }
+
     /**
      * Execute the console command.
      *
@@ -37,6 +48,13 @@ class Command extends BasedCommand {
      */
     public function handle()
     {
-        $this->info("scalfolding the excel format!!!");
+        $model = $this->getModel();
+        // scalfold the maatwebsite/import class;
+        // make it using collection 
+
+        // scalfold the excel file
+        $this->info("scalfolding the excel format for {$model} model !!!");
+        // Artisan::call("make:import")
+
     }
 }
