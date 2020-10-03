@@ -5,7 +5,7 @@ namespace punk73\LaravelExcelImporter;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use punk73\LaravelExcelImporter\Command;
-use Maatwebsite\Excel\ExcelServiceProvider;
+;
 
 class LaravelExcelImporterServiceProvider extends ServiceProvider {
     
@@ -20,6 +20,6 @@ class LaravelExcelImporterServiceProvider extends ServiceProvider {
 
 
     public function register(){
-        App::register(ExcelServiceProvider::class);
+        $this->app->register("Maatwebsite\Excel\ExcelServiceProvider");
     }
 }
