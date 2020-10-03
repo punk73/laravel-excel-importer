@@ -1,0 +1,18 @@
+{
+    "name": "punk73/laravel-excel-importer",
+    "description": "make command to import data from excel based on your model",
+    "authors": [
+        {
+            "name": "punk73",
+            "email": "teguhsetiawan171@gmail.com"
+        }
+    ],
+    "require": {},
+    "license": "MIT",
+
+    "autoload": {
+        "psr-4": {
+            "punk73\\laravel-excel-importer\\" : "src/"
+        }
+    }
+}
