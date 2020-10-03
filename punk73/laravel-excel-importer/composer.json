@@ -7,9 +7,10 @@
             "email": "teguhsetiawan171@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "maatwebsite/excel": "^3.1"
+    },
     "license": "MIT",
-
     "autoload": {
         "psr-4": {
             "punk73\\laravel-excel-importer\\" : "src/"
