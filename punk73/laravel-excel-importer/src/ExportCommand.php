@@ -2,8 +2,11 @@
 
 namespace punk73\LaravelExcelImporter;
 
+use Exception;
 use Illuminate\Console\Command;
-
+// use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
+use punk73\LaravelExcelImporter\MasterExport;
 class ExportCommand extends Command
 {
     /**
@@ -30,6 +33,16 @@ class ExportCommand extends Command
         parent::__construct();
     }
 
+    public function getModel(){
+        $model = $this->argument('modelname');
+
+        if(class_exists($model)){
+            return $model;
+        }else{
+            throw new Exception("model {$model} not found. make sure model exist");
+        }
+    }
+
     /**
      * Execute the console command.
      *
@@ -38,9 +51,16 @@ class ExportCommand extends Command
     public function handle()
     {
         //make sure model exists
+        $model = $this->getModel();
 
-        // run Excel::export 
+        $table = (new $model)->getTable();
+        // run Excel::export
+        $pk = (new $model)->getKeyName(); 
+        
+        $query = (new $model)->take(10)->orderBy($pk, 'desc');
 
+        Excel::store(new MasterExport($query), $table . ".xlsx");
+        $this->info("Great!!");
         // notify user where the file is;
     }
 }

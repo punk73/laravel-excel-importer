@@ -30,6 +30,11 @@ class ImportCommand extends Command
         parent::__construct();
     }
 
+    public function isClassExist($modelname){
+        
+        return class_exists($modelname, false);
+    }
+
     /**
      * Execute the console command.
      *
@@ -38,7 +43,10 @@ class ImportCommand extends Command
     public function handle()
     {
         //make sure model exist
+        $modelname = trim( $this->argument('modelname') );
+        $isClassExist = $this->isClassExist($modelname);
 
+        $res = compact('modelname', 'isClassExist');
         // make sure file to import exist
 
         // check if we already has the ExcelImport class;
@@ -48,7 +56,7 @@ class ImportCommand extends Command
         // run Excel::import
 
         // notify user the progress
-        $this->info("hey, it worked!");
+        $this->info("hey, it worked!". json_encode($res));
 
     }
 }
