@@ -1,6 +1,6 @@
 {
     "name": "punk73/laravel-excel-importer",
-    "description": "make command to import data from excel based on your model",
+    "description": "make command to import or export model excel",
     "authors": [
         {
             "name": "punk73",
