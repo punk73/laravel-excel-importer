@@ -4,6 +4,7 @@ namespace punk73\LaravelExcelImporter;
 
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 // use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Facades\Excel;
 use punk73\LaravelExcelImporter\MasterExport;
@@ -59,8 +60,10 @@ class ExportCommand extends Command
         
         $query = (new $model)->take(10)->orderBy($pk, 'desc');
 
-        Excel::store(new MasterExport($query), $table . ".xlsx");
-        $this->info("Great!!");
+        $filename =  $table . ".xlsx";
+        Excel::store(new MasterExport($query), $filename);
+        $path = Storage::path($filename);
+        $this->info("Great!! we stored exported file on {$path}");
         // notify user where the file is;
     }
 }
