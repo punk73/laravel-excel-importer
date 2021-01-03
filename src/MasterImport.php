@@ -1,6 +1,8 @@
 <?php
 
 namespace punk73\LaravelExcelImporter;
+
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +13,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\Importable;
-class MasterImport implements WithMappedCells, ToModel, WithProgressBar
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\ToCollection;
+class MasterImport implements WithHeadingRow, ToCollection, WithProgressBar
 {
     use Importable;
 
@@ -22,17 +26,19 @@ class MasterImport implements WithMappedCells, ToModel, WithProgressBar
         "id", "created_at", "updated_at"
     ];
 
-    public function mapping(): array
+    public function collection(Collection $rows)
     {
-        // loop through cols;
 
-        return $this->mappingResult;
+        foreach ($rows as $key => $row) {
+            # code...
+            $this->model($row->toArray());
+        }
     }
     
     public function model(array $row)
     {
         # insert data to model
-        $data = new $this->model;
+        $data = [];
         foreach ($this->cols as $col) {
             # code...
             if(in_array($col, $this->skip)) {
@@ -41,10 +47,12 @@ class MasterImport implements WithMappedCells, ToModel, WithProgressBar
 
             if(isset($row[$col])) {
                 $value = $row[$col];
-                $data->{$col} = $value;
+                $data[$col] = $value;
             }
         }
-        return $data;
+        
+        return $newData = (new $this->model)->firstOrCreate($data);
+
     }
 
     public function getCols(){
@@ -124,7 +132,6 @@ class MasterImport implements WithMappedCells, ToModel, WithProgressBar
         $this->model = $model;
         $this->initCols();
         $this->initFilename();
-        $this->initMappingResult();
     }
 
     

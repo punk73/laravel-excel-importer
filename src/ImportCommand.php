@@ -91,7 +91,7 @@ class ImportCommand extends Command
                 $create = $this->createImportFile($filename, $cols);
                 // notify user to input data;
                 if($create){
-                    $this->info("we generate the import file for you. please check the file at {$path}");
+                    $this->info("File {$filename} not found. but don't worry,we generate the import file for you. please check the file at {$path} and fill accordingly.");
                 }else {
                     $this->info('something went wrong');
                 }
@@ -107,8 +107,14 @@ class ImportCommand extends Command
         // run Excel::import
         $importer = new MasterImport($modelname);
         $this->output->title('Starting import');
-        $importer->withOutput($this->output)->import($path);
-        $this->output->success('Import successful');
+        try {
+            //code...
+            $importer->withOutput($this->output)->import($path);
+            $this->output->success('Import successful');
+        } catch (\Exception $th) {
+            $this->error("\nPlease make sure you already fill the data.");
+            throw $th;
+        }
 
     }
 }
